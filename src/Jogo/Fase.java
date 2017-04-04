@@ -27,7 +27,7 @@ public class Fase extends JPanel implements ActionListener{
 	//Verifica se está jogando o não
 	private boolean jogo;
 	
-	private int vida = 3;
+	private int vida = 5;
 	
 	private List<Alienigenas_Inimigo> align;
 	
