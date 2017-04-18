@@ -25,14 +25,16 @@ public class Alienigenas_Inimigo {
 		
 		
 		if(contador++ %5 == 0){
-			referencia = new ImageIcon("Imagens\\inimigo_1.gif");
+			referencia = new ImageIcon("Imagens\\relogio007.png");
 		}else{
-			referencia = new ImageIcon("Imagens\\inimigo_2.gif");
+			referencia = new ImageIcon("Imagens\\calendario001.png");
 		}
 		
 		imagem = referencia.getImage();
 		
+		//Retorna a largura em pixels das imagens.Caso contrário, GetWidth retorna 0.
 		this.largura = imagem.getWidth(null);
+		//Retorna a altura em pixels das imagens. Caso contrário, GetHeight retorna 0.
 		this. altura = imagem.getHeight(null);
 		
 		isVisible = true;
