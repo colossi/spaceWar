@@ -2,24 +2,29 @@ package Jogo;
 
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
+import java.util.Random;
 
 public class Alienigenas_Inimigo {
 	
 	private Image imagem;
 	private int x, y;
+	private int yPadrao;
 	private int largura, altura;
 	private boolean isVisible;
 	
-	private static final int LARGURA_TELA = 500;
+	private static final int LARGURA_TELA = 700;
 	private static final int VELOCIDADE = 1;
+	private static final int ALTURA_SOBE = 50;
 	
 	private static int contador = 0;
 	
 	public Alienigenas_Inimigo(int x, int y){
 		this.x = x;
 		this.y = y;
+		this.yPadrao = y;
 		
 		ImageIcon referencia;
 		
@@ -74,13 +79,22 @@ public class Alienigenas_Inimigo {
 		this.isVisible = isVisible;
 	}
 	
+	//Movimentação do Inimigo
 	public void moverInimigo(){
 		if(this.x < 0){
 			this.x = LARGURA_TELA;
 		}else {
 			this.x -= VELOCIDADE;
 		}
-	}
+		
+		//Função Sobe e Desce
+		if (this.x % 80 < 30) {
+			this.y = this.yPadrao - ALTURA_SOBE;
+		} else {
+			this.y = this.yPadrao;
+		}
+		
+	}	
 	
 	public Rectangle getBounds(){
 		return new Rectangle(x, y, largura, altura);

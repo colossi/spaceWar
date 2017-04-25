@@ -18,7 +18,7 @@ import javax.swing.Timer;
 
 public class Fase extends JPanel implements ActionListener{
 	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1;
 	
 	private Image fundo;
 	private Nave nave;
@@ -29,7 +29,7 @@ public class Fase extends JPanel implements ActionListener{
 	
 	private int vida = 5;
 	
-	private List<Alienigenas_Inimigo> align;
+	private List<Alienigenas_Inimigo> inimigo;
 	
 	//Matriz de coordenadas de linhas e colunas
 	//1º Valor = x e 2º Valor =y
@@ -43,13 +43,13 @@ public class Fase extends JPanel implements ActionListener{
 			{540,90},{810,220},{860,20},{740,180},
 			{820,128},{490,170},{700,30},{920,300},
 			{856,328},{456,320},
-			
 			};
 	
 
 	
 	public Fase(){
-		ImageIcon referencia = new ImageIcon("Imagens\\fundo.png");
+		//Configuração de Imagem de Fundo
+		ImageIcon referencia = new ImageIcon("Imagens\\fundo009.jpg");
 		fundo = referencia.getImage();
 		
 		nave = new Nave();
@@ -58,6 +58,7 @@ public class Fase extends JPanel implements ActionListener{
 		
 		inicializaInimigos();
 		
+		//Tempo do movimento dos inimigos
 		timer = new Timer(5, this);
 		timer.start();
 		
@@ -67,13 +68,13 @@ public class Fase extends JPanel implements ActionListener{
 	}
 	
 	//Chama os inimigos 
-		public void inicializaInimigos(){
-			align = new ArrayList<Alienigenas_Inimigo>();
+	public void inicializaInimigos(){
+		inimigo = new ArrayList<Alienigenas_Inimigo>();
 			
-			for(int i=0; i < coordenadas.length;i++){
-				align.add(new Alienigenas_Inimigo(coordenadas[i][0], coordenadas[i][1]));
-			}
+		for(int i=0; i < coordenadas.length;i++){
+			inimigo.add(new Alienigenas_Inimigo(coordenadas[i][0], coordenadas[i][1]));
 		}
+	}
 	
 	public void paint(Graphics g){
 		Graphics2D graficos = (Graphics2D) g;
@@ -81,6 +82,7 @@ public class Fase extends JPanel implements ActionListener{
 		
 		if(vida > 0){
 			
+			//O drawImage renderiza a imagem.
 			graficos.drawImage(nave.getImagem(), nave.getX(), nave.getY(), this);
 		
 			List<Missel> misseis = nave.getMisseis();
@@ -91,20 +93,21 @@ public class Fase extends JPanel implements ActionListener{
 				graficos.drawImage(m.getImagem(), m.getX(), m.getY(), this);
 			}
 		
-			for(int i = 0; i < align.size(); i++){
-				Alienigenas_Inimigo in = align.get(i);
+			for(int i = 0; i < inimigo.size(); i++){
+				Alienigenas_Inimigo in = inimigo.get(i);
 				graficos.drawImage(in.getImagem(), in.getX(), in.getY(), this);
 			}
 			
 			graficos.setColor(Color.WHITE);
 			//Apresenta o número de inimigos no canto da tela
-			graficos.drawString("Inimigos:" + align.size(), 5, 15);
+			graficos.drawString("Inimigos:" + inimigo.size(), 5, 15);
 			
 		} else {
-			ImageIcon fimdoJogo = new ImageIcon("Imagens\\gameover.jpg");
+			ImageIcon fimdoJogo = new ImageIcon("Imagens\\Fim002.png");
 			graficos.drawImage(fimdoJogo.getImage(), 0, 0, null);
 		}
 		
+		//Fecha e abre outra janela, ou seja, a do GameOver
 		g.dispose();
 	}
 
@@ -113,7 +116,7 @@ public class Fase extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		
 		//verifica se matou os inimigos
-		if(align.size() == 0){
+		if(inimigo.size() == 0){
 			jogo = false;
 		}
 		
@@ -130,13 +133,13 @@ public class Fase extends JPanel implements ActionListener{
 			}
 		}
 		
-		for(int i = 0; i < align.size(); i++){
-			Alienigenas_Inimigo in = align.get(i);
+		for(int i = 0; i < inimigo.size(); i++){
+			Alienigenas_Inimigo in = inimigo.get(i);
 			
 			if(in.isVisible()){
 				in.moverInimigo();
 			}else {
-				align.remove(i);
+				inimigo.remove(i);
 			}
 		}
 		
@@ -151,6 +154,7 @@ public class Fase extends JPanel implements ActionListener{
 
 		@Override
 		public void keyPressed(KeyEvent e) {
+			//keyPressed é disparado sempre que qualquer tecla do teclado é pressionada
 			nave.KeyPressed(e);
 		}
 
@@ -161,14 +165,14 @@ public class Fase extends JPanel implements ActionListener{
 		
 	}
 	
-	//Colisoes do jogo com o align
+	//Colisoes do jogo com o inimigo
 	public void colisoes(){
 		Rectangle formaNave = nave.getBounds();
 		Rectangle formaAling;
 		Rectangle formaMissel;
 		
-		for(int i=0; i < align.size();i++){
-			Alienigenas_Inimigo tempAling = align.get(i);
+		for(int i=0; i < inimigo.size();i++){
+			Alienigenas_Inimigo tempAling = inimigo.get(i);
 			formaAling = tempAling.getBounds();
 			
 			if(formaNave.intersects(formaAling)){
@@ -186,8 +190,8 @@ public class Fase extends JPanel implements ActionListener{
 			Missel tempMissel = misseis.get(i);
 			formaMissel = tempMissel.getBounds();
 			
-			for(int j=0; j < align.size(); j++){
-				Alienigenas_Inimigo tempInimigo = align.get(j);
+			for(int j=0; j < inimigo.size(); j++){
+				Alienigenas_Inimigo tempInimigo = inimigo.get(j);
 				formaAling = tempInimigo.getBounds();
 				
 				if(formaMissel.intersects(formaAling)){

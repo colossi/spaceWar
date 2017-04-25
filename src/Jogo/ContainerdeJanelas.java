@@ -10,8 +10,9 @@ public class ContainerdeJanelas extends JFrame {
 		
 		add(new Fase());
 		
-		setTitle("Space War");
-		setSize(500,400);
+		setTitle("Space War - Corrida contra o tempo...");
+		//Tamanho da Tela
+		setSize(640,400);
 		//Tamanho de tela não pode ser alterada
 		setResizable(false);
 		//Configuração de Sair do jogo pelo X
